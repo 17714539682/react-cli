@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import MainRoute from './router';
+import 'babel-polyfill'
 import 'antd/dist/antd.css';
 
 import {Provider} from 'react-redux';
