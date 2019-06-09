@@ -14,7 +14,7 @@ const getConfirmation = (message, callback) => {
     const allowTransition = window.confirm(message);
     callback(allowTransition);
   }
-ReactDOM.render(<Provider store={store}><BrowserRouter  getUserConfirmation={getConfirmation} >
+ReactDOM.render(<Provider store={store}><BrowserRouter  getUserConfirmation={getConfirmation} basename="rss/views"  >
     <MainRoute/>
 </BrowserRouter></Provider>, document.getElementById('root'));
 
