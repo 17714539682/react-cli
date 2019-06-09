@@ -53,7 +53,7 @@ class Test extends Component {
     
        return (
            <div id="test-container">
-              当前路由：{this.props.pageTitle}{this.props.user}
+              当前路由：{this.props.location.pathname}
                <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
                {this.button}
                {
