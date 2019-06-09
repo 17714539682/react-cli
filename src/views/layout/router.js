@@ -12,9 +12,9 @@ const MainRoute = () => (
   <Switch>
     {/* 子路由 */}
     <Route path={`/index/rendering`} exact component={Doc} />
-              <Route path={`/index/home`} component={Home} />
-              <Route path={`/index/doc`} strict component={Doc1} />
-              <Route exact path={`/index`} render={() => (
+              <Route path={`${this.props.location.pathname}/home`} component={Home} />
+              <Route path={`${this.props.location.pathname}/doc`} strict component={Doc1} />
+              <Route exact path={`${this.props.location.pathname}`} render={() => (
                 <h3>请选择一个主题</h3>
               )} />
   </Switch>
