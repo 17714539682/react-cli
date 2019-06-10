@@ -2,10 +2,15 @@ import React, { Component } from 'react';
 import './scss/index.scss'
 
 import CustomMenu from "./menu";
-import MainRoute from './router';
+import {Route} from 'react-router-dom'
+import asyncComponent from "@/router/Async";
+
+
 import { Layout,Icon } from 'antd';
 const { Header, Sider, Content } = Layout;
-
+const Home = asyncComponent(() => import('@/views/home'));
+const Doc = asyncComponent(() => import('@/views/form/add'));
+const Doc1 = asyncComponent(() => import('@/views/doc'));
 
 
 const menus = [
@@ -68,7 +73,12 @@ export default class Topics extends Component {
               minHeight: 280,
             }}
           >
-              <MainRoute/>
+              <Route path={`/index/rendering`} exact component={Doc} />
+              <Route path={`/index//home`} component={Home} />
+              <Route path={`/index/doc`} strict component={Doc1} />
+              <Route exact path={`/index`} render={() => (
+                <h3>请选择一个主题</h3>
+              )} />
           </Content>
         </Layout>
       </Layout>)
