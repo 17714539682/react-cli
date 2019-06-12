@@ -6,7 +6,7 @@ import {Route} from 'react-router-dom'
 import asyncComponent from "@/router/Async";
 
 
-import { Layout,Icon } from 'antd';
+import { Layout,Icon,Avatar} from 'antd';
 const { Header, Sider, Content } = Layout;
 const Home = asyncComponent(() => import('@/views/home'));
 const Doc = asyncComponent(() => import('@/views/form/add'));
@@ -15,22 +15,12 @@ const Doc1 = asyncComponent(() => import('@/views/doc'));
 
 const menus = [
   {
-    title: '基本组件',
+    title: '任务中心',
     icon: 'laptop',
     key: '/index',
     subs: [
-      {key: '/index/rendering', title: '按钮', icon: '',},
-      {key: '/index/doc', title: '图标', icon: '',},
-    ]
-  },
-  {
-    title: '导航组件',
-    icon: 'bars',
-    key: '/home/navigation',
-    subs: [
-      {key: '/home/navigation/dropdown', title: '下拉菜单', icon: ''},
-      {key: '/home/navigation/menu', title: '导航菜单', icon: ''},
-      {key: '/home/navigation/steps', title: '步骤条', icon: ''},
+      {key: '/index/rendering', title: '任务列表', icon: '',},
+      {key: '/index/doc', title: '用户管理', icon: '',},
     ]
   }
 ]
@@ -42,7 +32,9 @@ export default class Topics extends Component {
       collapsed: false,
     };
   }
+ 
   toggle = () => {
+    
     this.setState({
       collapsed: !this.state.collapsed,
     });
@@ -53,10 +45,10 @@ export default class Topics extends Component {
       <Layout>
         <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
           <div className="logo">
-            <img src={require("@/assets/logo.svg")} alt=""/> <span>个人网站</span>
+            <img src={require("@/assets/logo.svg")} alt=""/> <span>推送服务管理系统</span>
           </div>
           <CustomMenu menus={menus}/>
-          </Sider>
+        </Sider>
         <Layout>
           <Header style={{ background: '#fff', padding: 0 }}>
             <Icon
@@ -64,6 +56,12 @@ export default class Topics extends Component {
               type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
               onClick={this.toggle}
             />
+            
+            <div className="tips">
+              <span>管理员</span>
+              <Avatar icon="user" />
+            </div>
+
           </Header>
           <Content
             style={{
