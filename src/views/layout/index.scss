@@ -1,0 +1,46 @@
+.aside {
+  min-height: 100vh;
+    .logo {
+      color: #fff;
+      height: 64px;
+      padding-top: 12px;
+      text-align: center;
+
+      img {
+        height: 40px;
+      }
+
+      span {
+        padding-right: 14px;
+      }
+    }
+    .active{
+      display: none;
+    }
+    .ant-menu {
+      margin-top: 10px;
+    }
+
+    
+}
+
+
+.head {
+  >i {
+    margin-left: 16px;
+    font-size: 20px;
+  }
+
+  .tips {
+    float: right;
+    :global{
+    .ant-avatar {
+      margin: 0 8px 0;
+      background-color: rgb(135, 208, 104);
+    }
+    span:last-child{
+      padding-right: 16px;
+    }
+  }
+  }
+}

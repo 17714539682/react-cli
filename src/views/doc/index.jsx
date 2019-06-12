@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Form, Input,Table, Button,Modal,notification } from 'antd';
-import './scss/index.scss'
+import { Form, Input,Table, Button,Modal,message } from 'antd';
+import styles from './scss/index.scss'
 import { apiUser } from '@/common/api.js'
 //搜索表单
 class AdvancedSearchForm extends React.Component {
@@ -38,7 +38,7 @@ class AdvancedSearchForm extends React.Component {
 
   render() {
     return (
-      <form className="search">
+      <form className={styles.search}>
         <label>
           手机号:
           <input
@@ -59,7 +59,7 @@ class AdvancedSearchForm extends React.Component {
         </label>
         <div className="btn">
           <Button type="primary" onClick={this.handleSearch}>
-            搜索
+            查询
           </Button>
           <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
             重置
@@ -74,13 +74,23 @@ class AdvancedSearchForm extends React.Component {
 const CollectionCreateForm = Form.create({ name: 'advanced_search' })(
 class extends React.Component {
   sub = ()=>{
-    const dataForm = this.props.form.getFieldsValue();
-    this.props.taskDetail.id && (dataForm.id = this.props.taskDetail.id);
-    
-    return dataForm;
+    this.props.form.validateFields(err => {
+      if (!err) {
+        const dataForm = this.props.form.getFieldsValue();
+        this.props.taskDetail.id && (dataForm.id = this.props.taskDetail.id);
+        apiUser.change(dataForm).then(res=>{
+          if(res.code === '0'){
+            message.success("保存成功");
+            this.props.onCreate();
+          }else{
+            message.error(res.msg);
+          }
+        })
+      }
+    })
   }
   render() {
-    const { visible, taskDetail,onCancel,onCreate} = this.props;
+    const { visible, taskDetail,onCancel} = this.props;
     const title = taskDetail ? '修改' : '新增';
     const { getFieldDecorator } = this.props.form;
     return (
@@ -89,17 +99,52 @@ class extends React.Component {
         className="showDetail"
         title={`${title}用户信息`}
         onCancel={onCancel}
-        onOk={()=>onCreate(this.sub())}
+        onOk={this.sub}
         destroyOnClose={true}
+        cancelText='取消'
+        okText='保存'
       >
           <Form className="ant-advanced-search-form">
             <Form.Item label="手机号">
-            {getFieldDecorator('phone',{initialValue:taskDetail.phone || ""})(
+            {getFieldDecorator('phone',{initialValue:taskDetail.phone || "",
+                rules: [{
+                  required: true,
+                  message: '请输入内容'
+                }, {
+                    validator: (rule, val, callback) => {
+                      if (!val) {
+                          callback();
+                      }
+                      var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
+                      if (!myreg.test(val)) {
+                          callback('请输入正确的内容！');
+                      }
+                      callback();
+                  }
+                }]
+              }
+            )(
               <Input placeholder={'请输入'}/>
             )}
             </Form.Item>
             <Form.Item label="邮箱">
-            {getFieldDecorator('email',{initialValue:taskDetail.email || ""})(
+            {getFieldDecorator('email',{initialValue:taskDetail.email || "",
+            rules: [{
+              required: true,
+              message: '请输入内容'
+            }, {
+                validator: (rule, val, callback) => {
+                  if (!val) {
+                      callback();
+                  }
+                  
+                  var myreg=/^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+                  if (!myreg.test(val)) {
+                      callback('请输入正确的内容！');
+                  }
+                  callback();
+              }
+            }]})(
               <Input placeholder={'请输入'}/>
             )}
             </Form.Item>
@@ -138,7 +183,7 @@ export default class test extends Component {
         fixed: 'right',
         render: (text, record) =>
           this.state.data.length >= 1 ? (
-            <Button size="small" icon="edit" className="edit" onClick={() => this.edit(text, record)}>修改</Button>
+            <a href="javascript:void(0);" onClick={() => this.edit(text, record)}>修改</a>
           ) : null,
       },
     ]
@@ -195,28 +240,9 @@ export default class test extends Component {
   handleCancel = () => {
     this.setState({ visible: false ,taskDetail:{}});
   };
-  //新增、修改用户信息
-  handleCreate = (r) =>{
-    console.log(r);
-    apiUser.change(r).then(res=>{
-      if(res.code === '0'){
-        this.setState({ visible: false ,taskDetail:{}});
-        notification.success({
-          message: '成功',
-          description:'操作成功',
-          duration: 2,
-        });
-        this.getList()
-      }else{
-        notification.error({
-          message: '失败',
-          description:res.msg,
-          duration: 2,
-        });
-      }
-    })
-    
-
+  handleCreate = () =>{
+    this.setState({ visible: false ,taskDetail:{}});
+    this.getList()
   }
   render() {
     return (

@@ -4,6 +4,7 @@ import { HashRouter } from 'react-router-dom';
 import MainRoute from './router';
 import 'babel-polyfill'
 import 'antd/dist/antd.css';
+import '@/styles/layout.scss'
 
 import {Provider} from 'react-redux';
 import store from '@/store';

@@ -1,7 +1,8 @@
-form.search{
+.search{
     display: flex;
     padding-bottom: 20px;
     border-bottom: 10px solid #f0f2f5;
+    :global{
     input{
         margin-right: 15px;
         margin-left: 6px;
@@ -10,11 +11,5 @@ form.search{
         line-height: 30px;
         padding: 0 11px;
         outline: none;
-    }
-}
-button.edit,button.edit:hover,button.edit:focus{
-    background-color:#1dc5a3;
-    color: #fff;
-    border: none;
-    font-size: 12px;
+    }}
 }

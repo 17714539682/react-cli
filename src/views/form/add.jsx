@@ -1,15 +1,15 @@
 import React from 'react';
-import './add.scss'
+import styles from './add.scss'
 import format from '@/utils/format.js'
 import {apiTask} from '@/common/api.js'
 
-import { Table, Button, Form, Input, Select, DatePicker,notification,Modal} from 'antd';
+import { Table, Button, Form, Input, Select, DatePicker, message,Modal} from 'antd';
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 // 列表条件搜索
 class AdvancedSearchForm extends React.Component {
-  //搜索
+  //查询
   handleSearch = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -48,7 +48,7 @@ class AdvancedSearchForm extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
+      <Form className={styles.antform} onSubmit={this.handleSearch}>
         <Form.Item label="公司编码">
         {getFieldDecorator('comCode',{initialValue:""})(
           <Input placeholder={'请输入'}/>
@@ -80,7 +80,7 @@ class AdvancedSearchForm extends React.Component {
         </Form.Item>
         <div className="btn">
           <Button type="primary" htmlType="submit">
-            搜索
+            查询
           </Button>
           <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
             重置
@@ -96,7 +96,7 @@ class CollectionCreateForm extends React.Component {
     return (
       <Modal
         visible={visible}
-        className="showDetail"
+        className={styles.showDetail}
         title="任务详情"
         onCancel={onCancel}
         footer={[
@@ -132,6 +132,8 @@ export default class table extends React.Component {
       taskDetail:'',
       data: [],
       total:0,
+      pageNum:1,
+      pageSize:10,
       columns : [
         {
           title: '公司编码',
@@ -141,7 +143,7 @@ export default class table extends React.Component {
         {
           title: '报表类型',
           dataIndex: 'reportType',
-          width: 80,
+          width: 90,
           render:(text)=>{
             if(text === 1 || text===9){
               return '季报'
@@ -153,7 +155,7 @@ export default class table extends React.Component {
         {
           title: '开始时间',
           dataIndex: 'startDate',
-          width: 150,
+          width: 110,
           render:(text)=>{
             return format(new Date(text),'yyyy-MM-dd hh:mm:ss')
           }
@@ -161,7 +163,7 @@ export default class table extends React.Component {
         {
           title: '结束时间',
           dataIndex: 'endDate',
-          width: 150,
+          width: 110,
           render:(text)=>{
             return format(new Date(text),'yyyy-MM-dd hh:mm:ss')
           }
@@ -169,7 +171,7 @@ export default class table extends React.Component {
         {
           title: '创建时间',
           dataIndex: 'entryTime',
-          width: 150,
+          width: 110,
           render:(text)=>{
             return format(new Date(text),'yyyy-MM-dd hh:mm:ss')
           }
@@ -177,7 +179,7 @@ export default class table extends React.Component {
         {
           title: '更新时间',
           dataIndex: 'updateTime',
-          width: 150,
+          width: 110,
           render:(text)=>{
             return format(new Date(text),'yyyy-MM-dd hh:mm:ss')
           }
@@ -185,7 +187,7 @@ export default class table extends React.Component {
         {
           title: '计算结果',
           dataIndex: 'result',
-          width: 100,
+          width: 90,
           render:(value)=>{
             return value === 1 ? '成功' : value === 2 ? '失败' : '-'
           }
@@ -193,7 +195,7 @@ export default class table extends React.Component {
         {
           title: '备注',
           dataIndex: 'msg',
-          width: 100,
+          width:90,
           render:(value)=>{
             return value || '-'
           }
@@ -201,11 +203,11 @@ export default class table extends React.Component {
         {
           title: '操作',
           dataIndex: 'operation',
-          width: 100,
           fixed: 'right',
+          width:90,
           render: (text, record) =>
             this.state.data.length >= 1 ? (
-              <Button size="small" icon="file-text" className="detail" onClick={() => this.showDetail(text, record)}>详情</Button>
+              <a href="javascript:;" onClick={() => this.showDetail(text, record)}>详情</a>
             ) : null,
         },
       ]
@@ -220,8 +222,20 @@ export default class table extends React.Component {
     this.setState({
       listFlag:true
     })
-    let arr = {pageNum: 1,pageSize: 10}
+    let arr = {}
+    if(data && !data.pageSize){
+      this.setState({
+        pageNum:1
+      })
+      arr = {pageSize:this.state.pageSize,pageNum:1}
+    }
+    console.log(this.state);
+    console.log(data);
+    
+    
     Object.assign(arr,data)
+    console.log(arr);
+    
     apiTask.getList(arr).then(r=>{
       this.setState({
         listFlag:false
@@ -252,15 +266,14 @@ export default class table extends React.Component {
     }).join(',')
     apiTask.taskReset({recordId:arr1}).then(r=>{
       if(r.code === '0'){
-        notification.success({
-          message: '成功',
-          description:'任务重置成功',
-          duration: 2,
-        });
+         message.success('任务重置成功');
+         this.getList()
         this.setState({
           selectedRowKeys: [],
           loading: false,
         });
+      }else{
+        message.error('操作失败')
       }
     })
   };
@@ -285,6 +298,12 @@ export default class table extends React.Component {
   };
   //分页切换事件
   changeSize = (pageNum,pageSize)=>{
+    this.setState({ pageSize,pageNum:1});
+    this.getList({pageSize})
+  }
+  changeNum = (pageNum,pageSize)=>{
+    this.setState({ pageNum });
+    
     this.getList({pageNum,pageSize})
   }
   //详情页关闭
@@ -300,11 +319,12 @@ export default class table extends React.Component {
     };
     const hasSelected = selectedRowKeys.length > 0;
     return (
-      <div>
-        <div className="search">
+      <div style={{height:"calc(100% - 33px)"}}>
+        <div className="search" style={{padding:"16px 24px 0"}}>
           <WrappedAdvancedSearchForm MakeMoney={this.getList}/>
         </div>
-        <div style={{ marginBottom: 16 }}>
+        <div className={styles.tableTask}>
+        <div style={{ marginBottom: 16 ,marginTop:10}}>
           <Button type="primary" onClick={this.start} disabled={!hasSelected} loading={loading}>
             重置
           </Button>
@@ -312,19 +332,21 @@ export default class table extends React.Component {
             {hasSelected ? `选中 ${selectedRowKeys.length} 项` : ''}
           </span>
         </div>
-        <Table rowSelection={rowSelection} columns={this.state.columns} loading={this.state.listFlag} scroll={{ x: 1500 }} pagination={{
+        
+        <Table rowSelection={rowSelection} columns={this.state.columns} loading={this.state.listFlag} scroll={{ x: 1400}} pagination={{
           showTotal: (total) => `共 ${total} 条数据`,
           showSizeChanger: true,
           size: 'small',
-          pageSize: 10,
+          current:this.state.pageNum,
+          defaultPageSize: this.state.pageSize,
           total:this.state.total,
           pageSizeOptions: ['10', '20', '50'],
           showQuickJumper: true,
           onShowSizeChange:this.changeSize,
-          onChange:this.changeSize
+          onChange:this.changeNum
         }} dataSource={this.state.data} 
         />
-
+        </div>
         <CollectionCreateForm
           taskDetail={this.state.taskDetail}
           visible={this.state.visible}

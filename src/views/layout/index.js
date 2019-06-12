@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './scss/index.scss'
+import styles from './index.scss'
 
 import CustomMenu from "./menu";
 import {Route} from 'react-router-dom'
@@ -10,18 +10,19 @@ import { Layout,Icon,Avatar} from 'antd';
 const { Header, Sider, Content } = Layout;
 const Home = asyncComponent(() => import('@/views/home'));
 const Doc = asyncComponent(() => import('@/views/form/add'));
-const Doc1 = asyncComponent(() => import('@/views/doc'));
+const Doc1 = asyncComponent(() => import('@/views/doc/index.jsx'));
 
 
 const menus = [
   {
     title: '任务中心',
     icon: 'laptop',
-    key: '/index',
-    subs: [
-      {key: '/index/rendering', title: '任务列表', icon: '',},
-      {key: '/index/doc', title: '用户管理', icon: '',},
-    ]
+    key: '/index/rendering',
+  },
+  {
+    title: '用户管理',
+    icon: 'laptop',
+    key: '/index/doc',
   }
 ]
 
@@ -43,32 +44,34 @@ export default class Topics extends Component {
   render() {
     return (
       <Layout>
-        <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
-          <div className="logo">
-            <img src={require("@/assets/logo.svg")} alt=""/> <span>推送服务管理系统</span>
+        <Sider trigger={null} collapsible collapsed={this.state.collapsed} className={styles.aside}>
+          <div className={styles.logo}>
+            <img src={require("@/assets/logo.svg")} alt=""/> 
+            <span className={`${this.state.collapsed ? styles.active : ''}`}>推送服务管理系统</span>
           </div>
           <CustomMenu menus={menus}/>
         </Sider>
         <Layout>
-          <Header style={{ background: '#fff', padding: 0 }}>
+          <Header style={{ background: '#fff', padding: 0 }} className={styles.head}>
             <Icon
               className="trigger"
               type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
               onClick={this.toggle}
             />
             
-            <div className="tips">
-              <span>管理员</span>
+            <div className={styles.tips}>
               <Avatar icon="user" />
+              <span>管理员</span>
             </div>
 
           </Header>
           <Content
             style={{
-              margin: '24px 16px',
-              padding: 24,
-              background: '#fff',
-              minHeight: 280,
+              margin: '24px 0 0 16px',
+              height: 'calc(100vh - 137px)',
+              backgroundColor:"#fff",
+              boxSizing:'border-box',
+              
             }}
           >
               <Route path={`/index/rendering`} exact component={Doc} />

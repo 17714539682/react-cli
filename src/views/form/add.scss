@@ -1,26 +1,28 @@
-.ant-advanced-search-form {
+.antform {
     display: flex;
     justify-content: space-between;
+    border-bottom: 10px solid #f0f2f5;
+    :global{
     .ant-form-item {
         display: flex;
+        margin-bottom: 16px;
       }
+    }
 }
+
+
 .ant-table-thead > tr > th{
     white-space: nowrap;
 }
-button.detail,button.detail:hover,button.detail:focus{
-    background-color: #f8ac59;
-    color: #fff;
-    border: none;
-}
+
 .showDetail{
     td{
         word-break: break-all;
     }
     td:nth-child(2n-1){
         white-space: nowrap;
-        // text-align: right;
         vertical-align: top;
         padding-right: 20px;
     }
 }
+.tableTask{overflow: auto;height: calc(100% - 49px);padding: 0 24px}
