@@ -4,10 +4,7 @@ let Api_URL = ''
 
 switch(Edition){
   case 'production':
-      Api_URL = 'http://eip.htsc.com.cn/htsc-fic'
-      break;
-  case 'testing':
-      Api_URL = 'http://eip.htsc.com.cn/htsc-fic'
+      Api_URL = 'http://eip.htsc.com.cn/htsc-fic/rss/api'
       break;
   default:
       Api_URL = 'http://168.61.9.234:9090/htsc-fic-target-service'

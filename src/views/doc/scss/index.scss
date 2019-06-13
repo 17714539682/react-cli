@@ -15,10 +15,13 @@
     }}
 }
 .tableuser{
-    margin:16px 0;
+    margin:10px 0;
     padding-left: 24px;
     height: calc(100% - 102px);
     overflow: auto;
+    button{
+        margin-bottom: 16px;
+    }
 }
 .user{
     height: calc(100% - 5px);

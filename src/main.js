@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import MainRoute from './router';
 import 'babel-polyfill'
 import 'antd/dist/antd.css';
@@ -15,8 +15,8 @@ const getConfirmation = (message, callback) => {
     const allowTransition = window.confirm(message);
     callback(allowTransition);
   }
-ReactDOM.render(<Provider store={store}><HashRouter getUserConfirmation={getConfirmation} basename="/htsc-fic/rss-views/"  >
+ReactDOM.render(<Provider store={store}><BrowserRouter getUserConfirmation={getConfirmation} basename="/htsc-fic/rss-views/"  >
     <MainRoute/>
-</HashRouter></Provider>, document.getElementById('root'));
+</BrowserRouter></Provider>, document.getElementById('root'));
 
 serviceWorker.unregister();

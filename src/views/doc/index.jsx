@@ -30,6 +30,7 @@ class AdvancedSearchForm extends React.Component {
     this.setState({
       search: obj
     });
+    this.props.search({ phone: '', email: '' })
   };
   //搜索
   handleSearch = () => {
