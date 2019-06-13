@@ -138,8 +138,8 @@ class extends React.Component {
                       callback();
                   }
                   
-                  var myreg=/^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
-                  if (!myreg.test(val)) {
+                  var myreg1=/^([a-zA-Z]|[0-9])(\w|-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+                  if (!myreg1.test(val)) {
                       callback('请输入正确的内容！');
                   }
                   callback();
@@ -247,13 +247,13 @@ export default class test extends Component {
   render() {
     return (
 
-      <div id="test-container">
+      <div className={styles.user}>
         <AdvancedSearchForm search={this.getList} />
-        <div style={{ marginBottom: 16 ,marginTop:16}}>
+        <div className={styles.tableuser}>
           <Button type="primary" icon="plus" onClick={this.add}>
             新增
           </Button>
-        </div>
+        
         <Table columns={this.state.columns} loading={this.state.listFlag} pagination={{
           showTotal: (total) => `共 ${total} 条数据`,
           showSizeChanger: true,
@@ -266,7 +266,7 @@ export default class test extends Component {
           onChange: this.changeSize
         }} dataSource={this.state.data}
         />
-
+        </div>
         <CollectionCreateForm
           taskDetail={this.state.taskDetail}
           visible={this.state.visible}

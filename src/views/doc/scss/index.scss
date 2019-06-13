@@ -2,6 +2,7 @@
     display: flex;
     padding-bottom: 20px;
     border-bottom: 10px solid #f0f2f5;
+    padding: 16px 24px;
     :global{
     input{
         margin-right: 15px;
@@ -12,4 +13,13 @@
         padding: 0 11px;
         outline: none;
     }}
+}
+.tableuser{
+    margin:16px 0;
+    padding-left: 24px;
+    height: calc(100% - 102px);
+    overflow: auto;
+}
+.user{
+    height: calc(100% - 5px);
 }

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import styles from './index.scss'
 
-import CustomMenu from "./menu";
-import {Route} from 'react-router-dom'
+// import CustomMenu from "./menu";
+import {Menu} from 'antd'
+import {Link,Route} from 'react-router-dom'
 import asyncComponent from "@/router/Async";
 
 
@@ -21,7 +22,7 @@ const menus = [
   },
   {
     title: '用户管理',
-    icon: 'laptop',
+    icon: 'inbox',
     key: '/index/doc',
   }
 ]
@@ -49,7 +50,22 @@ export default class Topics extends Component {
             <img src={require("@/assets/logo.svg")} alt=""/> 
             <span className={`${this.state.collapsed ? styles.active : ''}`}>推送服务管理系统</span>
           </div>
-          <CustomMenu menus={menus}/>
+          <Menu
+          defaultSelectedKeys={[this.props.location.pathname]}
+          mode="inline"
+          theme="dark"
+        >
+        {
+          menus.map(item=>{
+            return <Menu.Item key={item.key}>
+            <Link to={item.key}>
+              {item.icon && <Icon type={item.icon}/>}
+              <span>{item.title}</span>
+            </Link>
+          </Menu.Item>
+          })
+        }
+          </Menu>
         </Sider>
         <Layout>
           <Header style={{ background: '#fff', padding: 0 }} className={styles.head}>
