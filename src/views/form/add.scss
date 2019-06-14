@@ -11,9 +11,6 @@
 }
 
 
-.ant-table-thead > tr > th{
-    white-space: nowrap;
-}
 
 .showDetail{
     td{
@@ -25,4 +22,12 @@
         padding-right: 20px;
     }
 }
-.tableTask{overflow: auto;height: calc(100% - 49px);padding: 0 24px}
+.tableTask{overflow: auto;height: calc(100% - 49px);padding: 0 24px;
+    :global{
+        .ant-table-thead > tr > th,td{
+            white-space: nowrap;
+            padding: 8px 16px !important;
+            position: relative;
+        }
+    }
+}

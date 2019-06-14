@@ -22,7 +22,16 @@ const request = (method, url, options) => {
     }, options)
 
     if (method === 'post') {
+        console.log(config);
+        
+        if(url.indexOf('rebuildTarget') > -1){
+            // config.data = 'recordId: 8652228069'
+            // config.headers = Object.assign({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }, config.headers)
+        }
+       
+        else{
         config.headers = Object.assign({ 'Content-Type': 'Application/json; charset=UTF-8' }, config.headers)
+        }
     }
   
     return new Promise((resolve, reject) => {

@@ -433,11 +433,18 @@ module.exports = function(webpackEnv) {
                   sourceMap: isEnvProduction && shouldUseSourceMap,
                 },
                 'sass-loader'
-              ),
-              // Don't consider CSS imports dead code even if the
-              // containing package claims to have no side effects.
-              // Remove this when webpack adds a warning or an error for this.
-              // See https://github.com/webpack/webpack/issues/6571
+              )
+              // .concat({
+              //   // 这行的意思是引入加载器 sass-resources-loader
+              //   loader: 'sass-resources-loader',
+              //   options: {
+              //   resources: [
+              //     path.resolve(__dirname, '../src/styles/layout.scss'),
+              //     path.resolve(__dirname, '../src/styles/base.scss'),
+              //   ],
+              // }
+              // })
+              ,
               sideEffects: true,
             },
             // Adds support for CSS Modules, but using SASS

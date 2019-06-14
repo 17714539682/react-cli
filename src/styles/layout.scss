@@ -9,6 +9,11 @@ button.detail,button.detail:hover,button.detail:focus{
     color: #fff;
     border: none;
 }
-#root{
-    min-width: 1360px;
+body{
+    :global{
+        #root{
+            min-width: 1360px;
+        }
+        
+    }
 }

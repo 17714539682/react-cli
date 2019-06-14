@@ -9,7 +9,9 @@ const { RangePicker } = DatePicker;
 
 // 列表条件搜索
 class AdvancedSearchForm extends React.Component {
-  
+  componentDidMount(){
+    this.props.onRef(this)
+  }
   //查询
   handleSearch = e => {
     e.preventDefault();
@@ -22,16 +24,16 @@ class AdvancedSearchForm extends React.Component {
         values.endTime = "";
       }
       let {data,...obj} = values;
-      this.props.MakeMoney(obj);
+      this.props.resetSearch(obj);
     });
   };
   //重置
   handleReset = () => {
     this.props.form.resetFields();
-    this.props.MakeMoney()
+    this.props.resetSearch()
   };
   //下拉框选择
-  handleChange = (value,key) => {
+  handleChange = (key,value) => {
     this.props.form.validateFields((err, values) => {
       if(values.data){
         values.startTime = format(values.data[0]._d,'yyyy-MM-dd');
@@ -41,8 +43,8 @@ class AdvancedSearchForm extends React.Component {
         values.endTime = "";
       }
       let {data,...obj} = values;
-      obj[value] = key;
-      this.props.MakeMoney(obj);
+      obj[key] = value;
+      this.props.resetSearch(obj);
     });
   }
   
@@ -98,12 +100,15 @@ class CollectionCreateForm extends React.Component {
       <Modal
         visible={visible}
         className={styles.showDetail}
+        width={650}
+        bodyStyle={{maxHeight: 'calc(100vh - 200px)',overflow: 'auto'}}
         title="任务详情"
         onCancel={onCancel}
         footer={[
           <Button key="back" onClick={onCancel}>关闭</Button>
         ]}
       >
+      {!taskDetail.msg ? (
         <table>
           <tbody>
             {taskDetail.secuCode && <tr><td>证券编码</td><td>{taskDetail.secuCode}</td></tr>}
@@ -117,6 +122,8 @@ class CollectionCreateForm extends React.Component {
             }
           </tbody>
         </table>
+      ) : ( <tr><td>备注:</td><td>{taskDetail.msg}</td></tr> )
+      }
       </Modal>
     );
   }
@@ -127,10 +134,10 @@ export default class table extends React.Component {
     super(props);
     this.state = {
       selectedRowKeys: [],
-      loading: false,
-      visible: false,
+      loading: false,     //任务重算
+      visible: false,     //详情弹窗
+      taskDetail:'',      //详情
       listFlag:false,
-      taskDetail:'',
       data: [],
       total:0,
       pageNum:1,
@@ -158,7 +165,7 @@ export default class table extends React.Component {
           dataIndex: 'startDate',
           width: 110,
           render:(text)=>{
-            return format(new Date(text),'yyyy-MM-dd hh:mm:ss')
+            return format(new Date(text),'yyyy-MM-dd')
           }
         },
         {
@@ -166,7 +173,7 @@ export default class table extends React.Component {
           dataIndex: 'endDate',
           width: 110,
           render:(text)=>{
-            return format(new Date(text),'yyyy-MM-dd hh:mm:ss')
+            return format(new Date(text),'yyyy-MM-dd')
           }
         },
         {
@@ -196,10 +203,7 @@ export default class table extends React.Component {
         {
           title: '备注',
           dataIndex: 'msg',
-          width:90,
-          render:(value)=>{
-            return value || '-'
-          }
+          width:90
         },
         {
           title: '操作',
@@ -229,14 +233,8 @@ export default class table extends React.Component {
         pageNum:1
       })
       arr = {pageSize:this.state.pageSize,pageNum:1}
-    }
-    console.log(this.state);
-    console.log(data);
-    
-    
+    }    
     Object.assign(arr,data)
-    console.log(arr);
-    
     apiTask.getList(arr).then(r=>{
       this.setState({
         listFlag:false
@@ -257,22 +255,30 @@ export default class table extends React.Component {
     this.setState({ loading: true });
     let arr = this.state.data.filter((item, index) => {
       if (this.state.selectedRowKeys.includes(index)) {
-        return item
+        return item.recordId
       }else{
         return ''
       }
     })
-    let arr1 = arr.map(item=>{
-      return item.recordId
-    }).join(',')
+    let arr1 = arr.join(',')
     apiTask.taskReset({recordId:arr1}).then(r=>{
       if(r.code === '0'){
-         message.success('任务重置成功');
-         this.getList()
+        message.success('任务重置成功'); 
         this.setState({
           selectedRowKeys: [],
           loading: false,
         });
+        this.child.props.form.validateFields((err, values) => {
+          if(values.data){
+            values.startTime = format(values.data[0]._d,'yyyy-MM-dd');
+            values.endTime = format(values.data[1]._d,'yyyy-MM-dd');
+          }else{
+            values.startTime = "";
+            values.endTime = "";
+          }
+          let {data,...obj} = values;
+          this.getList(obj)
+        })
       }else{
         message.error('操作失败')
       }
@@ -281,14 +287,14 @@ export default class table extends React.Component {
   //展示详情
   showDetail = (text, record) => {
     let data = {
-      recordId: 4444418346,
+      recordId: record.id,
       reportType:record.reportType
     }
     apiTask.taskDetail(data).then(r=>{
       if(r.code === "0"){
         this.setState({ 
           visible: true,
-          taskDetail:r.resultData || {}
+          taskDetail:r.resultData || {msg:record.msg || '无'}
         });
       }
     })
@@ -304,12 +310,11 @@ export default class table extends React.Component {
   }
   changeNum = (pageNum,pageSize)=>{
     this.setState({ pageNum });
-    
     this.getList({pageNum,pageSize})
   }
   //详情页关闭
   handleCancel = () => {
-    this.setState({ visible: false });
+    this.setState({ visible: false ,taskDetail:''});
   };
 
   render() {
@@ -322,12 +327,12 @@ export default class table extends React.Component {
     return (
       <div style={{height:"calc(100% - 33px)"}}>
         <div className="search" style={{padding:"16px 24px 0"}}>
-          <WrappedAdvancedSearchForm MakeMoney={this.getList}/>
+          <WrappedAdvancedSearchForm resetSearch={this.getList} onRef={(ref) => {this.child = ref}}/>
         </div>
         <div className={styles.tableTask}>
         <div style={{ marginBottom: 16 ,marginTop:10}}>
           <Button type="primary" onClick={this.start} disabled={!hasSelected} loading={loading}>
-            重置
+            重新计算
           </Button>
           <span style={{ marginLeft: 8 }}>
             {hasSelected ? `选中 ${selectedRowKeys.length} 项` : ''}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Input,Table, Button,Modal,message } from 'antd';
-import styles from './scss/index.scss'
+import styles from './index.scss'
 import { apiUser } from '@/common/api.js'
 //搜索表单
 class AdvancedSearchForm extends React.Component {
@@ -102,7 +102,6 @@ class extends React.Component {
         onCancel={onCancel}
         onOk={this.sub}
         destroyOnClose={true}
-        cancelText='取消'
         okText='保存'
       >
           <Form className="ant-advanced-search-form">
