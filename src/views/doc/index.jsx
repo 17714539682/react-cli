@@ -124,7 +124,7 @@ class extends React.Component {
                 }]
               }
             )(
-              <Input placeholder={'请输入'}/>
+              <Input placeholder={'请输入'} autoComplete="off"/>
             )}
             </Form.Item>
             <Form.Item label="邮箱">
@@ -145,7 +145,7 @@ class extends React.Component {
                   callback();
               }
             }]})(
-              <Input placeholder={'请输入'}/>
+              <Input placeholder={'请输入'} autoComplete="off"/>
             )}
             </Form.Item>
           </Form>
@@ -183,7 +183,7 @@ export default class test extends Component {
         fixed: 'right',
         render: (text, record) =>
           this.state.data.length >= 1 ? (
-            <a href="javascript:void(0);" onClick={() => this.edit(text, record)}>修改</a>
+            <a href="javascript:void(0);" onClick={() => this.edit(text, record)}>修改</a>//eslint-disable-line
           ) : null,
       },
     ]

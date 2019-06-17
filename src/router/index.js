@@ -6,11 +6,14 @@ const layout = asyncComponent(() => import('../views/layout'));
 const MainRoute = () => (
   <Switch>
     <Route path='/' exact render={()=> (
-               <Redirect to="index"/>
+      <Redirect to="index"/>
     )}/>
     <Route path='/index' component={layout} />
     {/* 所有错误路由跳转页面 */}
-    <Route render={()=> (404)} />
+    {/* <Route render={()=> (404)} /> */}
+    <Route render={()=> (
+        <Redirect to="index"/>
+    )}/>
   </Switch>
 )
  

@@ -1,4 +1,5 @@
 import Axios from 'axios'
+import Qs from 'qs'
 
 // 添加请求拦截器
 Axios.interceptors.request.use(
@@ -25,8 +26,10 @@ const request = (method, url, options) => {
         console.log(config);
         
         if(url.indexOf('rebuildTarget') > -1){
-            // config.data = 'recordId: 8652228069'
-            // config.headers = Object.assign({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }, config.headers)
+            console.log(config);
+            
+            config.data = Qs.stringify(option)
+            config.headers = Object.assign({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }, config.headers)
         }
        
         else{

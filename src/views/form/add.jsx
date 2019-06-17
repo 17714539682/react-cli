@@ -54,7 +54,7 @@ class AdvancedSearchForm extends React.Component {
       <Form className={styles.antform} onSubmit={this.handleSearch}>
         <Form.Item label="公司编码">
         {getFieldDecorator('comCode',{initialValue:""})(
-          <Input placeholder={'请输入'}/>
+          <Input placeholder={'请输入'} autoComplete="off"/>
         )}
         </Form.Item>
         <Form.Item label="报表类型">
@@ -212,7 +212,7 @@ export default class table extends React.Component {
           width:90,
           render: (text, record) =>
             this.state.data.length >= 1 ? (
-              <a href="javascript:;" onClick={() => this.showDetail(text, record)}>详情</a>
+              <a href="javascript:void(0);" onClick={() => this.showDetail(text, record)}>详情</a>//eslint-disable-line
             ) : null,
         },
       ]
@@ -254,14 +254,12 @@ export default class table extends React.Component {
   start = () => {
     this.setState({ loading: true });
     let arr = this.state.data.filter((item, index) => {
-      if (this.state.selectedRowKeys.includes(index)) {
-        return item.recordId
-      }else{
-        return ''
-      }
-    })
-    let arr1 = arr.join(',')
-    apiTask.taskReset({recordId:arr1}).then(r=>{
+      return this.state.selectedRowKeys.includes(index)
+    }).map(item=>{
+      return item.recordId
+    }).join(',')
+    
+    apiTask.taskReset({recordId:arr}).then(r=>{
       if(r.code === '0'){
         message.success('任务重置成功'); 
         this.setState({

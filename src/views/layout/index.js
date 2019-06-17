@@ -10,12 +10,12 @@ const menus = [
   {
     title: '任务中心',
     icon: 'laptop',
-    key: '/index/rendering',
+    key: '/index/task',
   },
   {
     title: '用户管理',
     icon: 'inbox',
-    key: '/index/doc',
+    key: '/index/user',
   }
 ]
 
