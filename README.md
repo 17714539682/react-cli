@@ -1,5 +1,5 @@
-集成环境:
-react + antd + axios + react-router-dom + redux + react-redux + redux-thunk + sass-loader + node-sass + babel-polyfill
+集成开发环境:<br>
+react + antd + axios + react-router-dom + redux + react-redux + redux-thunk + sass-loader + node-sass + babel-polyfill + css module
 
 ## Available Scripts
 
