@@ -1,0 +1,15 @@
+$background-color-theme: #2474a5;
+$background-color-theme1: red;
+$background-color-theme2: #652BF5;
+@mixin font_color($color){
+    color:$color;                    //默认背景色
+    [data-theme="theme1"] & {
+        color:$background-color-theme1;
+    }
+    [data-theme="theme2"] & {
+        color:$background-color-theme2;
+    }
+    [data-theme="theme3"] & {
+        color:$background-color-theme;
+    }
+}

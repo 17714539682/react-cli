@@ -68,7 +68,7 @@ class AdvancedSearchForm extends React.Component {
           </Select>
           )}
           </Form.Item>
-        
+          
         <Form.Item label="计算结果">
         {getFieldDecorator('result',{initialValue:""} )(
           <Select style={{ width: 80 }} onChange={this.handleChange.bind(null,'result')}>
@@ -350,6 +350,11 @@ export default class table extends React.Component {
           onChange:this.changeNum
         }} dataSource={this.state.data} 
         />
+        {/* 10500+10500+2090+1800+210+1800=26900
+        73500+4800+2000+600=80900 */}
+        {/* 8/20 : 9.7@+1.2 */}
+      
+
         </div>
         <CollectionCreateForm
           taskDetail={this.state.taskDetail}

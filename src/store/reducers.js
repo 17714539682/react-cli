@@ -16,6 +16,16 @@ function pageTitle (state = defaultState.newsDetail, action) {
   }
 }
 
+function setUser (state = defaultState.user, action) {
+  // 不同的action有不同的处理逻辑
+  switch (action.type) {
+    case 'SET_USER':
+      return {...Object.assign(state,action.data)}
+    default:
+      return state
+  }
+}
+
 function todos (state = defaultState.todos, action) {
   switch (action.type) {
     case 'SET_INFO_LIST':
@@ -28,5 +38,6 @@ function todos (state = defaultState.todos, action) {
 // 导出所有reducer
 export default combineReducers({
     pageTitle,
-    todos
+    todos,
+    setUser
 })

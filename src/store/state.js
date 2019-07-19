@@ -1,4 +1,5 @@
 let initState = {
+    user:{name:null},
     newsDetail:{
       pageTitle: '首页',
       user:'admin'

@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import SecondRoute from './router';
 import styles from './index.scss';
+import { connect } from 'react-redux'
+import { setUser } from '@/store/action'
 
-import { Menu,Layout,Icon,Avatar} from 'antd';
+import { Menu,Layout,Icon,Avatar,Button} from 'antd';
 const { Header, Sider, Content } = Layout;
 
 const menus = [
@@ -19,19 +21,29 @@ const menus = [
   }
 ]
 
-export default class Topics extends Component {
+class Topics extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      collapsed: false,
+      collapsed: false
     };
+  }
+  componentDidMount(){
+     window.onbeforeunload= function(event) { return window.confirm("确定离开此页面吗？"); }
   }
   // 左侧菜单切换
   toggle = () => {
     this.setState({
       collapsed: !this.state.collapsed,
+      id:10
     });
   };
+  login = () =>{
+    this.setState({
+      loading:true
+    });
+    this.props.setUser({})
+  }
 
   render() {
     return (
@@ -39,7 +51,7 @@ export default class Topics extends Component {
         <Sider collapsed={this.state.collapsed} className={styles.aside}>
           <div className={styles.logo}>
             <img src={require("@/assets/logo.svg")} alt=""/> 
-            <span className={`${this.state.collapsed ? styles.active : ''}`}>推送服务管理系统</span>
+            <span className={`${this.state.collapsed ? styles.active : ''}`}>乐天派</span>
           </div>
           <Menu
             defaultSelectedKeys={[this.props.location.pathname]}
@@ -58,19 +70,27 @@ export default class Topics extends Component {
             }
           </Menu>
         </Sider>
-        <Layout>
+        <Layout> 
           <Header className={styles.head}>
             <Icon
               className="trigger"
               type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
               onClick={this.toggle}
             />
-            
-            <div className={styles.tips}>
-              <Avatar icon="user" />
-              <span>管理员</span>
-            </div>
-
+            {!this.props.name ?
+            (<div className={styles.tips}>
+              
+              <Link to="/login">
+              <span className="login">登录</span>
+              </Link>
+              <Button className="sing_up" type="primary" ghost>注册</Button>
+              <Button type="primary">写文章</Button>
+            </div>) :
+            (<div className={styles.tips}>
+              <Avatar src={this.props.pic} />
+              <span>{this.props.name}</span>
+            </div>)
+            }
           </Header>
           <Content
             style={{
@@ -85,4 +105,19 @@ export default class Topics extends Component {
         </Layout>
       </Layout>)
   }
-}         
+}   
+
+// const mapStateToProps = (state) => {
+//   return {
+//     ...state.setUser
+//   }
+// }
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+      setUser (data) {
+          dispatch(setUser(data)) 
+      }
+  }
+}
+
+export default connect(state => ({...state.setUser}),mapDispatchToProps)(Topics)

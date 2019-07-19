@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Prompt} from 'react-router-dom';
 import { Form, Input,Table, Button,Modal,message } from 'antd';
 import styles from './index.scss'
 import { apiUser } from '@/common/api.js'
@@ -222,6 +223,7 @@ export default class test extends Component {
       visible: true
     });
   }
+
   edit = (text,record) => {
     this.setState({ 
       visible: true,
@@ -246,9 +248,11 @@ export default class test extends Component {
   }
   render() {
     return (
-
       <div className={styles.user}>
         <AdvancedSearchForm search={this.getList} />
+        <Prompt
+          message="你确定要离开当前页面吗？"
+        />
         <div className={styles.tableuser}>
           <Button type="primary" icon="plus" onClick={this.add}>
             新增

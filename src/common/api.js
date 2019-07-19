@@ -16,9 +16,18 @@ export const apiTask = {
 
 export const apiUser = {
   getList(data){
-    return $http.post(`${API}/queryConfigList`,data)
+    return $http.post(`/react/api/mock/about`,data)
   },
   change(data){
-    return $http.get(`${API}/addConfig`,data)
+    return $http.post(`/react/api/mock/update`,data)
+  },
+  create(data){
+    return $http.post(`/react/api/mock/create`,data)
+  },
+  search(data){
+    return $http.get(`/react/api/mock/search`,data)
+  },
+  getUser(data){
+    return $http.get(`/react/api/mock/userInfo`,data)
   }
 }

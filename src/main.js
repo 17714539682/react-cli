@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter} from 'react-router-dom';
 import MainRoute from './router';
 import 'babel-polyfill'
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import { LocaleProvider } from 'antd';
 import 'antd/dist/antd.css';
-import '@/styles/layout.scss'
+import '@/styles/base.scss'
 
 import {Provider} from 'react-redux';
 import store from '@/store';

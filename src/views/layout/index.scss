@@ -1,3 +1,22 @@
+.liu::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: -38px;
+    border-width: 0 38px 38px;
+    border-style: solid;
+    border-color: transparent transparent #fff;
+  }
+  
+.liu{
+  
+  @keyframes test {
+    to {
+        transform: rotate(1turn);
+    }
+  } 
+}
+
 .aside {
   min-height: 100vh;
     .logo {
@@ -11,7 +30,7 @@
       }
 
       span {
-        padding-right: 14px;
+        padding-right: 80px;
       }
     }
     .active{
@@ -40,8 +59,21 @@
       margin: 0 8px 0;
       background-color: rgb(135, 208, 104);
     }
-    span:last-child{
-      padding-right: 16px;
+    span.login{
+      padding:0 16px;
+      cursor: pointer;
+      line-height: 32px;
+      display:inline-block;
+      color: #969696;
+    }
+    button{
+      background: #ea6f5a;
+      border-color: #ea6f5a;
+      margin: 0 12px;
+      border-radius: 20px;
+    }
+    .sing_up{
+      color: #ea6f5a;
     }
   }
   }
